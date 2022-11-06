@@ -1,0 +1,28 @@
+{
+  "name": "corlis",
+  "version": "1.0.0",
+  "description": "create recipes and generate a shopping list",
+  "main": "index.js",
+  "scripts": {
+    "prod": "node index.js",
+    "dev": "nodemon -r dotenv/config index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xForainx/corlis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xForainx/corlis/issues"
+  },
+  "homepage": "https://github.com/xForainx/corlis#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.20"
+  }
+}
