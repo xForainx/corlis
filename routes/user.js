@@ -30,4 +30,25 @@ router.get('/user:id', async function (req, res, next) {
   }
 });
 
+/* POST user */
+router.post('/user', async function(req, res, next) {
+  try {
+    res.json(await user.create(req.body));
+  } catch (err) {
+    console.error(`Error while creating user`, err.message);
+    next(err);
+  }
+});
+
+/* DELETE user by Id */
+router.delete('/user:id', async function(req, res, next) {
+  let userId = (req.params.id).substring(1);
+  try {
+    res.json(await user.remove(userId));
+  } catch (err) {
+    console.error(`Error while deleting user`, err.message);
+    next(err);
+  }
+});
+
 module.exports = router;

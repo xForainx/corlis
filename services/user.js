@@ -1,6 +1,7 @@
 const db = require('./db');
 const helper = require('../helper');
 const config = require('../config');
+const { application } = require('express');
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
@@ -18,7 +19,6 @@ async function getMultiple(page = 1) {
 }
 
 async function getUserByID(id) {
-  //const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
     `SELECT id, name, first_name, email 
     FROM user WHERE id=${id}`
@@ -36,7 +36,39 @@ async function getUserByID(id) {
   }
 }
 
+async function create(user){
+  console.log(user);//A supprimer
+
+  const result = await db.query(
+    `INSERT INTO user (name, first_name, email) VALUES ("${user.name}","${user.first_name}","${user.email}")`
+  );
+
+  let message = 'Error in creating user';
+
+  if (result.affectedRows) {
+    message = 'user created successfully';
+  }
+
+  return {message};
+}
+
+async function remove(id){
+  const result = await db.query(
+    `DELETE FROM user WHERE id=${id}`
+  );
+
+  let message = 'Error in deleting user';
+  //console.log(result.affectedRows) //A supprimer
+  if (result.affectedRows) {
+    message = `user id=${id} deleted successfully`;
+  }
+
+  return {message};
+}
+
 module.exports = {
   getMultiple,
-  getUserByID
+  getUserByID,
+  create,
+  remove
 }
