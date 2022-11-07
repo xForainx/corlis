@@ -23,12 +23,16 @@ async function getUserByID(id) {
     `SELECT id, name, first_name, email 
     FROM user WHERE id=${id}`
   );
+  //const data = helper.emptyOrRows(rows); //A supprimer (je garde quand même cette vieille ligne en attendant d'être sûr que la condition en dessous fonctionne tout le temps)
+
+  /*Condition pour vérifier que l'id existe en base*/
+  if (!rows.length) {
+    return "user does not exist";
+  }
   const data = helper.emptyOrRows(rows);
-  //const meta = {page};
 
   return {
-    data,
-    //meta
+    data
   }
 }
 
