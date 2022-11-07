@@ -40,6 +40,17 @@ router.post('/user', async function(req, res, next) {
   }
 });
 
+/* PUT user */
+router.put('/user:id', async function(req, res, next) {
+  let userId = (req.params.id).substring(1);
+  try {
+    res.json(await user.update(userId, req.body));
+  } catch (err) {
+    console.error(`Error while updating user`, err.message);
+    next(err);
+  }
+});
+
 /* DELETE user by Id */
 router.delete('/user:id', async function(req, res, next) {
   let userId = (req.params.id).substring(1);

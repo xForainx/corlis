@@ -36,7 +36,7 @@ async function getUserByID(id) {
   }
 }
 
-async function create(user){
+async function create(user) {
   console.log(user);//A supprimer
 
   const result = await db.query(
@@ -49,10 +49,26 @@ async function create(user){
     message = 'user created successfully';
   }
 
-  return {message};
+  return { message };
 }
 
-async function remove(id){
+async function update(id, user) {
+  const result = await db.query(
+    `UPDATE user 
+      SET name="${user.name}", first_name="${user.first_name}", email="${user.email}"
+      WHERE id=${id}`
+  );
+
+  let message = 'Error in updating user';
+
+  if (result.affectedRows) {
+    message = 'user updated successfully';
+  }
+
+  return { message };
+}
+
+async function remove(id) {
   const result = await db.query(
     `DELETE FROM user WHERE id=${id}`
   );
@@ -63,12 +79,13 @@ async function remove(id){
     message = `user id=${id} deleted successfully`;
   }
 
-  return {message};
+  return { message };
 }
 
 module.exports = {
   getMultiple,
   getUserByID,
   create,
+  update,
   remove
 }
