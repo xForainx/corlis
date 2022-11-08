@@ -2,6 +2,8 @@ const db = require('./db');
 const helper = require('../helper');
 const config = require('../config');
 const { application } = require('express');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
@@ -38,9 +40,12 @@ async function getUserByID(id) {
 
 async function create(user) {
   console.log(user);//A supprimer
+  const password = user.password;
+  console.log("password=" + password);//A supprimer
+  const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
   const result = await db.query(
-    `INSERT INTO user (name, first_name, email) VALUES ("${user.name}","${user.first_name}","${user.email}")`
+    `INSERT INTO user (name, first_name, email, password) VALUES ("${user.name}","${user.first_name}","${user.email}", "${encryptedPassword}")`
   );
 
   let message = 'Error in creating user';
