@@ -3,7 +3,7 @@ const router = express.Router();
 const user = require('../services/user');
 
 /* GET multiple users */
-router.get('/user', async function (req, res, next) {
+router.get('/', async function (req, res, next) {
   try {
     res.json(await user.getMultiple(req.query.page));
   } catch (err) {
@@ -13,10 +13,12 @@ router.get('/user', async function (req, res, next) {
 });
 
 /* GET user by id */
-router.get('/user:id', async function (req, res, next) {
+router.get('/:id', async function (req, res, next) {
+  console.log("req.params.id=" + req.params.id);//A supprimer
   let userId = (req.params.id).substring(1); //req.params sert à couper l'URL au niveau de "id", substring permet d'enlever la 1ere valeur de gauche (ici les :)
+  console.log("userID=" + userId);//A supprimer
   /*Condition si on ne met pas de paramètre ID*/
-  if (!userId) { 
+  if (!userId) {
     return res.status(400).json({
       message: "missing Parameter"
     })
@@ -31,7 +33,7 @@ router.get('/user:id', async function (req, res, next) {
 });
 
 /* POST user */
-router.post('/user', async function(req, res, next) {
+router.post('/', async function (req, res, next) {
   try {
     res.json(await user.create(req.body));
   } catch (err) {
@@ -41,7 +43,7 @@ router.post('/user', async function(req, res, next) {
 });
 
 /* PUT user */
-router.put('/user:id', async function(req, res, next) {
+router.put('/:id', async function (req, res, next) {
   let userId = (req.params.id).substring(1);
   try {
     res.json(await user.update(userId, req.body));
@@ -52,7 +54,7 @@ router.put('/user:id', async function(req, res, next) {
 });
 
 /* DELETE user by Id */
-router.delete('/user:id', async function(req, res, next) {
+router.delete('/:id', async function (req, res, next) {
   let userId = (req.params.id).substring(1);
   try {
     res.json(await user.remove(userId));

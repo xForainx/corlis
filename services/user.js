@@ -3,7 +3,8 @@ const helper = require('../helper');
 const config = require('../config');
 const { application } = require('express');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const { parse } = require('dotenv');
+const saltRounds = process.env.BCRYPT_SALT_ROUND;
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
@@ -36,6 +37,22 @@ async function getUserByID(id) {
   return {
     data
   }
+}
+
+async function getUserByEmail(email) {
+  console.log("on est dans services/user");//A supprimer
+  console.log("email du services/user=" + email);//A supprimer
+  const rows = await db.query(
+    `SELECT email, password FROM user WHERE email="${email}"`
+  );
+  if (!rows.length) {
+    console.log("rows.length=" + rows.length);//A supprimer
+    console.log("test !rows");//A supprimer
+    return "user or password does not exist";
+  }
+  const data = (helper.emptyOrRows(rows))[0].password;
+  console.log("data=" + data);//A supprimer
+  return { data }
 }
 
 async function create(user) {
@@ -90,6 +107,7 @@ async function remove(id) {
 module.exports = {
   getMultiple,
   getUserByID,
+  getUserByEmail,
   create,
   update,
   remove
